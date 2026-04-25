@@ -1,31 +1,32 @@
 {% set name = "Flask-Silk" %}
 {% set version = "0.2" %}
-{% set hash = "80a21faf09fe257443a4fbbf8cd3f6c793c567c87ff784751a1c38d2e18b5fbe" %}
-{% set build = 0 %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ hash }}
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 80a21faf09fe257443a4fbbf8cd3f6c793c567c87ff784751a1c38d2e18b5fbe
 
 build:
   noarch: python
-  number: {{ build }}
-  script: python -m pip install --no-deps --ignore-installed . --verbose
+  number: 1
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   host:
-    - python
+    - python {{ python_min }}
+    - setuptools
     - pip
 
   run:
-    - python
+    - python >={{ python_min }}
     - flask >=0.8
 
 test:
+  requires:
+    - python {{ python_min }}
   imports:
     - flask_silk
 
